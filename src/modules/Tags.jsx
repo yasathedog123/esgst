@@ -199,8 +199,8 @@ class Tags extends Module {
 			Groups: 'gpt',
 			Users: 'ut',
 		}[this.id];
-		const obj = { items: [], key };
-		obj.items = sortArray(
+		const obj = { items: [], key: this.id, colorSetting: Settings.get(`${this.id}_colors`) };
+		obj.items = Utils.sortArray(
 			items.filter(
 				(item) =>
 					item.mm &&
