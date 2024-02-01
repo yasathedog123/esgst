@@ -166,7 +166,7 @@ class GeneralEndlessScrolling extends Module {
 		};
 	}
 
-	init() {
+	async init() {
 		if (!this.esgst.mainPageHeading || !this.esgst.pagination) return;
 		if (this.esgst.pagination.classList.contains('pagination--no-results')) {
 			this.esgst.itemsPerPage = 50;
@@ -214,19 +214,19 @@ class GeneralEndlessScrolling extends Module {
 				Scope.find('main')?.resetData('comments');
 				this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent =
 					'0';
-				if (this.esgst.paginationNavigation) {
-					let lastLink = this.esgst.paginationNavigation.lastElementChild;
-					if (
-						lastLink.classList.contains('is-selected') &&
-						lastLink.querySelector('.fa-angle-double-right') &&
-						!this.esgst.lastPageLink
-					) {
-						es.currentPage = parseInt(lastLink.getAttribute('data-page-number'));
-					} else {
-						es.currentPage = 999999999;
-					}
+				let lastLink = this.esgst.paginationNavigation.lastElementChild;
+				if (
+					lastLink.classList.contains('is-selected') &&
+					lastLink.querySelector('.fa-angle-double-right') &&
+					!this.esgst.lastPageLink
+				) {
+					es.currentPage = parseInt(lastLink.getAttribute('data-page-number'));
 				} else {
-					es.currentPage = 999999999;
+					let LastPage = (await FetchRequest.get(`${this.esgst.searchUrl}last`)).html;
+					this.esgst.pagination.firstElementChild.firstElementChild.textContent = LastPage.body.getElementsByClassName('pagination__results')[0].firstElementChild.innerHTML;
+					this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent = LastPage.body.getElementsByClassName('pagination__results')[0].firstElementChild.nextElementSibling.innerHTML;
+					es.currentPage = this.esgst.modules.generalLastPageLink.lpl_getLastPage(LastPage);
+					es.pageBase = es.currentPage + 1;
 				}
 				es.nextPage = es.currentPage;
 				es.reversePages = true;
@@ -387,6 +387,7 @@ class GeneralEndlessScrolling extends Module {
 
 	async es_loadNext(es, callback, force) {
 		if (
+			!this.esgst.pagination.classList.contains('pagination--no-results') &&
 			!this.esgst.stopEs &&
 			!es.busy &&
 			(!es.paused || es.reversePages) &&
@@ -467,20 +468,12 @@ class GeneralEndlessScrolling extends Module {
 				this.es_setPagination(es);
 			}
 			es.reversePages = false;
-			if (es.currentPage === 999999999) {
-				es.currentPage = parseInt(
-					paginationNavigation.lastElementChild.getAttribute('data-page-number')
-				);
-				es.nextPage = es.currentPage;
-				es.pageBase = es.currentPage + 1;
-				es.pageIndex = es.currentPage;
-			}
 			if (Settings.get('es_murl')) {
 				this.updateUrl(es.currentPage);
 			}
 			this.esgst.pagination.firstElementChild.firstElementChild.textContent = (
 				parseInt(
-					this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.textContent.replace(
+					this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent.replace(
 						/,/g,
 						''
 					)
@@ -488,7 +481,7 @@ class GeneralEndlessScrolling extends Module {
 			)
 				.toString()
 				.replace(/\B(?=(\d{3})+(?!\d))/g, `,`);
-			this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent = this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.textContent;
+			this.esgst.pagination.firstElementChild.firstElementChild.textContent = this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent;
 		} else if (refresh) {
 			pagination =
 				es.paginations[
