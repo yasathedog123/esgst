@@ -16,7 +16,7 @@ class GiveawaysGridView extends Module {
 			description: () => (
 				<ul>
 					<li>
-						Turns each giveaway in the main page and some popups(
+						Turns each giveaway in the main page, game pages, profile pages and some popups(
 						<span data-esgst-feature-id="gb"></span>, <span data-esgst-feature-id="ged"></span> and{' '}
 						<span data-esgst-feature-id="ge"></span>) into a small box where only the game's image
 						is shown. Overlaying the image you will find the start/end times, type and level of the
@@ -45,6 +45,40 @@ class GiveawaysGridView extends Module {
 					name: 'Extend to Giveaway Extractor.',
 					sg: true,
 				},
+				gv_gp: {
+					description: () => (
+						<fragment>
+							<ul>
+								<li>
+									Extends to Game Pages.
+								</li>
+							</ul>
+							<ul>
+								<strong>example: </strong> 
+								<a href="https://www.steamgifts.com/game/Q6JGq/garrys-mod">https://www.steamgifts.com/game/Q6JGq/garrys-mod</a>
+							</ul>
+						</fragment>
+					),
+					name: 'Extend to Game Pages.',
+					sg: true,
+				},
+				gv_pro: {
+					description: () => (
+						<fragment>
+							<ul>
+								<li>
+									Extends to "Gifts Won" and "Gifts Sent" in a user's profile page.
+								</li>
+							</ul>
+							<ul>
+								<strong>example: </strong>
+								<a href={"https://www.steamgifts.com/user/cg"}>https://www.steamgifts.com/user/cg</a>
+							</ul>
+						</fragment>
+					),
+					name: 'Extend to Profile.',
+					sg: true,
+				},
 			},
 			id: 'gv',
 			name: 'Grid View',
@@ -58,7 +92,9 @@ class GiveawaysGridView extends Module {
 			this.esgst.giveawaysPath ||
 			Settings.get('gv_gb') ||
 			Settings.get('gv_ged') ||
-			Settings.get('gv_ge')
+			Settings.get('gv_ge') ||
+			Settings.get('gv_gp') ||
+			Settings.get('gv_pro')
 		) {
 			this.esgst.giveawayFeatures.push(this.gv_setContainer.bind(this));
 			this.esgst.style.insertAdjacentText(
@@ -76,7 +112,9 @@ class GiveawaysGridView extends Module {
 				}
 			`
 			);
-			if (this.esgst.giveawaysPath) {
+			this.userPath = window.location.pathname.match(/^\/user\//);
+			this.userWonPath = this.userPath && window.location.pathname.match(/\/giveaways\/won/);
+			if ((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.userPath && Settings.get('gv_pro'))) {
 				let button, display, element, elements, i, n, popout, spacing, slider;
 				button = createHeadingButton({
 					id: 'gv',
@@ -121,13 +159,21 @@ class GiveawaysGridView extends Module {
 
 	gv_setContainer(giveaways, main, source) {
 		if (
-			(!main || !this.esgst.giveawaysPath) &&
+			(!main || !((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.userPath && Settings.get('gv_pro')))) &&
 			(main ||
 				((source !== 'gb' || !Settings.get('gv_gb')) &&
 					(source !== 'ged' || !Settings.get('gv_ged')) &&
 					(source !== 'ge' || !Settings.get('gv_ge'))))
 		)
 			return;
+		let username, avatar;
+		if (this.userPath && !this.userWonPath) {
+			avatar = document
+				.getElementsByClassName('global__image-inner-wrap')[0]
+				.style.backgroundImage.match(/\("(.+)"\)/)[1];
+			username = document
+				.getElementsByClassName('featured__heading__medium')[0].textContent;
+		}
 		giveaways.forEach((giveaway) => {
 			giveaway.grid = true;
 			let popup =
@@ -180,7 +226,7 @@ class GiveawaysGridView extends Module {
 								},
 								{
 									attributes: {
-										title: `Created ${giveaway.startTimeColumn.lastElementChild.previousElementSibling.textContent}`,
+										title: `Created ${giveaway.startTimeColumn.firstElementChild.textContent}`,
 									},
 									// @ts-ignore
 									text: dateFns_formatDistanceStrict(giveaway.startTime, now, {
@@ -225,9 +271,14 @@ class GiveawaysGridView extends Module {
 					</div>
 				</div>
 			);
+			if (this.userPath && !this.userWonPath && source !== 'gb') {
+				giveaway.creatorContainer = (<a className="giveaway__username" href={`/user/${username}`}> {username}</a>);
+				giveaway.avatar = (<a href={`/user/${username}`} className="giveaway_image_avatar" style={`background-image:url(${avatar});`}></a>);
+			}
 			temp.firstElementChild.firstElementChild.appendChild(giveaway.creatorContainer);
 			temp.firstElementChild.appendChild(giveaway.links);
 			temp.appendChild(giveaway.avatar);
+			giveaway.panelFlexbox.insertBefore(giveaway.endTimeColumn.nextElementSibling, giveaway.panel);
 			giveaway.endTimeColumn.classList.add('esgst-hidden');
 			giveaway.startTimeColumn.classList.add('esgst-hidden');
 			giveaway.entriesLink.lastElementChild.textContent = giveaway.entriesLink.textContent.replace(

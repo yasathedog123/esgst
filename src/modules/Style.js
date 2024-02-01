@@ -2614,6 +2614,10 @@ function addStyle() {
 		float: none;
 	}
 
+	.esgst-gv-popout [data-draggable-id="winners"] {
+		margin: 5px 0 0;
+	}
+
 	.esgst-ags-panel {
 		margin: 0 0 15px 0;
 		max-width: 316px;
