@@ -112,9 +112,7 @@ class GiveawaysGridView extends Module {
 				}
 			`
 			);
-			this.userPath = window.location.pathname.match(/^\/user\//);
-			this.userWonPath = this.userPath && window.location.pathname.match(/\/giveaways\/won/);
-			if ((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.userPath && Settings.get('gv_pro'))) {
+			if ((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro'))) {
 				let button, display, element, elements, i, n, popout, spacing, slider;
 				button = createHeadingButton({
 					id: 'gv',
@@ -159,7 +157,7 @@ class GiveawaysGridView extends Module {
 
 	gv_setContainer(giveaways, main, source) {
 		if (
-			(!main || !((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.userPath && Settings.get('gv_pro')))) &&
+			(!main || !((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro')))) &&
 			(main ||
 				((source !== 'gb' || !Settings.get('gv_gb')) &&
 					(source !== 'ged' || !Settings.get('gv_ged')) &&
@@ -167,7 +165,7 @@ class GiveawaysGridView extends Module {
 		)
 			return;
 		let username, avatar;
-		if (this.userPath && !this.userWonPath) {
+		if (this.esgst.userPath && !this.esgst.userWonPath) {
 			avatar = document
 				.getElementsByClassName('global__image-inner-wrap')[0]
 				.style.backgroundImage.match(/\("(.+)"\)/)[1];
@@ -271,7 +269,7 @@ class GiveawaysGridView extends Module {
 					</div>
 				</div>
 			);
-			if (this.userPath && !this.userWonPath && source !== 'gb') {
+			if (this.esgst.userPath && !this.esgst.userWonPath && source !== 'gb') {
 				giveaway.creatorContainer = (<a className="giveaway__username" href={`/user/${username}`}> {username}</a>);
 				giveaway.avatar = (<a href={`/user/${username}`} className="giveaway_image_avatar" style={`background-image:url(${avatar});`}></a>);
 			}
