@@ -42,14 +42,15 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 				values: ['Top', 'Sidebar'],
 			},
 			sg: true,
-			sgPaths: /^Browse\sGiveaways/,
+			sgPaths: /^Discussion|Giveaway|Browse\sGiveaways/,
 			type: 'discussions',
 		};
 	}
 
 	async init() {
-		if (!this.esgst.giveawaysPath || !this.esgst.activeDiscussions || Settings.get('oadd')) return;
+		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && this.esgst.activeDiscussions && !Settings.get('oadd')) {
 		await Shared.common.checkMissingDiscussions();
+		}
 	}
 
 	adots_load(refresh) {
