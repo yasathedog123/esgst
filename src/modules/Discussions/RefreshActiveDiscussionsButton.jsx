@@ -13,7 +13,7 @@ class DiscussionsRefreshActiveDiscussionsButton extends Module {
 				<ul>
 					<li>
 						Adds a button (<i className="fa fa-refresh"></i>) to the page heading of the active
-						discussions (in the main page) that allows you to refresh the active discussions without
+						discussions that allows you to refresh the active discussions without
 						having to refresh the entire page.
 					</li>
 				</ul>
@@ -21,8 +21,15 @@ class DiscussionsRefreshActiveDiscussionsButton extends Module {
 			id: 'radb',
 			name: 'Refresh Active Discussions Button',
 			sg: true,
+			sgPaths: /^Discussion|Giveaway|Browse\sGiveaways/,
 			type: 'discussions',
 		};
+	}
+
+	init() {
+		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && (this.esgst.activeDiscussions) && !(Settings.get('oadd') || Settings.get('adots'))) {
+			this.radb_addButtons();
+		}
 	}
 
 	radb_addButtons() {
