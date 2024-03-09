@@ -2291,6 +2291,10 @@ class Common extends Module {
 		let filteredDeals = 0;
 		let discussionsIndex = 1;
 		let dealsIndex = 0;
+		let NumToDisplay = 7;
+		if (Settings.get(`adtd_sg`).enabled) {
+			NumToDisplay = Settings.get('activeDiscussions_displayed');
+		}
 		if (Settings.get('oadd') || Settings.get('rad')) {
 			discussionsIndex = 0;
 			dealsIndex = 1;
@@ -2358,7 +2362,7 @@ class Common extends Module {
 					.length;
 			}
 		}
-		if (numDiscussions < 5 || numDeals < 5) {
+		if (numDiscussions < NumToDisplay || numDeals < NumToDisplay) {
 			let [response1, response2] = await Promise.all([
 				FetchRequest.get('/discussions'),
 				FetchRequest.get('/discussions/deals'),
@@ -2389,7 +2393,7 @@ class Common extends Module {
 			);
 			const filters = this.esgst.modules.discussionsDiscussionFilters.getFilters();
 			let i = revisedElements.length - (numDiscussions + filteredDiscussions + 1);
-			while (numDiscussions < 5 && i > -1) {
+			while (numDiscussions < NumToDisplay && i > -1) {
 				if (
 					!preset ||
 					this.esgst.modules.discussionsDiscussionFilters.filters_filterItem(
@@ -2406,7 +2410,7 @@ class Common extends Module {
 			}
 			let elements = await this.esgst.modules.discussions.discussions_get(response2.html, true);
 			i = elements.length - (numDeals + filteredDeals + 1);
-			while (numDeals < 5 && i > -1) {
+			while (numDeals < NumToDisplay && i > -1) {
 				if (
 					!preset ||
 					this.esgst.modules.discussionsDiscussionFilters.filters_filterItem(
@@ -4776,7 +4780,7 @@ class Common extends Module {
 				{
 					attributes: {
 						class: 'table__row-outer-wrap',
-						style: `padding: 15px 0;`,
+						style: `padding: 10px 0;`,
 					},
 					type: 'div',
 					children: [

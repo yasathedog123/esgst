@@ -519,6 +519,8 @@ class _Settings {
 			hpg_sg: false,
 			pm_a: false,
 			radb_sg: true,
+			adtd_sg: false,
+			activeDiscussions_displayed: 7,
 			showChangelog_sg: true,
 			showChangelog_st: true,
 			vai_i_sg: false,

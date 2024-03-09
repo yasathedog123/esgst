@@ -61,6 +61,10 @@ class DiscussionsOldActiveDiscussionsDesign extends Module {
 			response1Html,
 			response2Html,
 			revisedElements;
+		let NumToDisplay = 7;
+		if (Settings.get(`adtd_sg`).enabled) {
+			NumToDisplay = Settings.get('activeDiscussions_displayed');
+		}
 		response1Html = (await FetchRequest.get('/discussions')).html;
 		response2Html = (await FetchRequest.get('/discussions/deals')).html;
 		this.esgst.activeDiscussions.classList.add('esgst-oadd');
@@ -150,7 +154,7 @@ class DiscussionsOldActiveDiscussionsDesign extends Module {
 			elements = revisedElements;
 		}
 		const filters = this.esgst.modules.discussionsDiscussionFilters.getFilters();
-		for (i = 0, j = elements.length - 1; i < 5 && j > -1; j--) {
+		for (i = 0, j = elements.length - 1; i < NumToDisplay && j > -1; j--) {
 			if (
 				!preset ||
 				this.esgst.modules.discussionsDiscussionFilters.filters_filterItem(
@@ -165,7 +169,7 @@ class DiscussionsOldActiveDiscussionsDesign extends Module {
 			}
 		}
 		elements = await this.esgst.modules.discussions.discussions_get(response2Html, true);
-		for (i = 0, j = elements.length - 1; i < 5 && j > -1; j--) {
+		for (i = 0, j = elements.length - 1; i < NumToDisplay && j > -1; j--) {
 			if (
 				!preset ||
 				this.esgst.modules.discussionsDiscussionFilters.filters_filterItem(

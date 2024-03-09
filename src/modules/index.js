@@ -83,6 +83,7 @@ import { giveawaysQuickGiveawaySearch } from './Giveaways/QuickGiveawaySearch';
 import { giveawaysAdvancedGiveawaySearch } from './Giveaways/AdvancedGiveawaySearch';
 import { generalSearchMagnifyingGlassButton } from './General/SearchMagnifyingGlassButton';
 import { discussionsRefreshActiveDiscussionsButton } from './Discussions/RefreshActiveDiscussionsButton';
+import { discussionsActiveDiscussionsToDisplay } from './Discussions/ActiveDiscussionsToDisplay';
 import { commentsReplyBoxPopup } from './Comments/ReplyBoxPopup';
 import { commentsCommentFormattingHelper } from './Comments/CommentFormattingHelper';
 import { commentsCommentVariables } from './Comments/CommentVariables';
@@ -249,6 +250,7 @@ const modules = {
 	giveawaysAdvancedGiveawaySearch,
 	generalSearchMagnifyingGlassButton,
 	discussionsRefreshActiveDiscussionsButton,
+	discussionsActiveDiscussionsToDisplay,
 	commentsReplyBoxPopup,
 	commentsCommentFormattingHelper,
 	commentsCommentVariables,

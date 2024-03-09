@@ -10,7 +10,7 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 			description: () => (
 				<ul>
 					<li>
-						Moves the active discussions (in the main page) to the top/sidebar of the page (you can
+						Moves the active discussions to the top/sidebar of the page (you can
 						decide where).
 					</li>
 					<li>If you move it to the sidebar, some things will be changed to save some space:</li>
@@ -73,6 +73,9 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 			if (!refresh) {
 				this.esgst.activeDiscussions.classList.remove('widget-container--margin-top');
 				this.esgst.activeDiscussions.classList.add('esgst-adots');
+				if (this.esgst.sidebar && Settings.get(`adtd_sg`).enabled) {
+					this.esgst.modules.discussionsActiveDiscussionsToDisplay.adtd_remove();
+				}
 			}
 			if (Settings.get('adots_index') === 0) {
 				if (!refresh) {
