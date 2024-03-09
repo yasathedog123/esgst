@@ -10,7 +10,7 @@ class DiscussionsReversedActiveDiscussions extends Module {
 			description: () => (
 				<ul>
 					<li>
-						Reverses the active discussions (in the main page) so that discussions come before deals
+						Reverses the active discussions so that discussions come before deals
 						(original order).
 					</li>
 				</ul>
@@ -18,19 +18,18 @@ class DiscussionsReversedActiveDiscussions extends Module {
 			id: 'rad',
 			name: 'Reversed Active Discussions',
 			sg: true,
-			sgPaths: /^Browse\sGiveaways/,
+			sgPaths: /^Discussion|Giveaway|Browse\sGiveaways/,
 			type: 'discussions',
 		};
 	}
 
 	async init() {
-		if (!Shared.esgst.giveawaysPath || !Shared.esgst.activeDiscussions || Settings.get('oadd')) {
-			return;
+		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && this.esgst.activeDiscussions && !Settings.get('oadd')) {
+			Shared.esgst.activeDiscussions.insertBefore(
+				Shared.esgst.activeDiscussions.lastElementChild,
+				Shared.esgst.activeDiscussions.firstElementChild
+			);
 		}
-		Shared.esgst.activeDiscussions.insertBefore(
-			Shared.esgst.activeDiscussions.lastElementChild,
-			Shared.esgst.activeDiscussions.firstElementChild
-		);
 	}
 }
 
