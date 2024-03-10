@@ -26,11 +26,11 @@ class GeneralHiddenCommunityPoll extends Module {
 
 	init() {
 		if (!this.esgst.giveawaysPath || !this.esgst.activeDiscussions) return;
-		let poll = this.esgst.activeDiscussions.previousElementSibling;
+		let poll = this.esgst.activeDiscussions.nextElementSibling;
 		if (
 			poll &&
 			poll.classList.contains('widget-container') &&
-			!poll.querySelector(`.block_header[href="/happy-holidays"]`)
+			!poll.querySelector(`.block_header > [href="/happy-holidays"]`)
 		) {
 			if (!Settings.get('hcp_v') || poll.querySelector('.table__row-outer-wrap.is-selected')) {
 				poll.classList.add('esgst-hidden');
