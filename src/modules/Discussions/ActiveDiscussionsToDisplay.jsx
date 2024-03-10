@@ -44,14 +44,11 @@ class DiscussionsActiveDiscussionsToDisplay extends Module {
 		if (this.esgst.activeDiscussions) {
 			let leftSide = this.esgst.activeDiscussions.firstElementChild.querySelector('.table');
 			let rightSide = this.esgst.activeDiscussions.lastElementChild.querySelector('.table');
-
 			while (leftSide.firstElementChild.children.length > Settings.get('activeDiscussions_displayed')) {
 				leftSide.firstElementChild.lastChild.remove();
 				rightSide.firstElementChild.lastChild.remove();
 			}
-
 			let element = leftSide.getBoundingClientRect();
-			console.log(element);
 			leftSide.style.minHeight = `${element.height}px`;
 			rightSide.style.minHeight = `${element.height}px`;
 		}
