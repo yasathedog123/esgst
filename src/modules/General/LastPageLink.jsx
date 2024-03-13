@@ -11,7 +11,7 @@ class GeneralLastPageLink extends Module {
 				<ul>
 					<li>
 						Adds a "Last Page" link to the pagination navigation of some pages that do not have it.
-						For example: discussion pages with 100+ pages, user pages, group pages with 100+ pages,
+						For example: user pages, group pages with 100+ pages,
 						etc...
 					</li>
 				</ul>
@@ -25,16 +25,14 @@ class GeneralLastPageLink extends Module {
 
 	init() {
 		if (!this.esgst.paginationNavigation) return;
-		if (this.esgst.discussionPath) {
-			this.lpl_addDiscussionLink();
-		} else if (this.esgst.userPath) {
+		if (this.esgst.userPath) {
 			this.lpl_addUserLink();
 		} else if (this.esgst.groupPath) {
 			this.lpl_addGroupLink();
 		}
 	}
 
-	lpl_getLastPage(context, main, discussion, user, userWon, group, groupUsers, groupWishlist) {
+	lpl_getLastPage(context, main, user, userWon, group, groupUsers, groupWishlist) {
 		let element,
 			first,
 			lastPage,
@@ -54,15 +52,6 @@ class GeneralLastPageLink extends Module {
 				element.querySelector('.fa-angle-double-right')
 			) {
 				lastPage = parseInt(element.getAttribute('data-page-number'));
-			} else if ((main && this.esgst.discussionPath) || discussion) {
-				if (pagination) {
-					lastPage = Math.ceil(
-						parseInt(pagination.firstElementChild.lastElementChild.textContent.replace(/,/g, '')) /
-							25
-					);
-				} else {
-					lastPage = 999999999;
-				}
 			} else if ((main && this.esgst.userPath) || user) {
 				if ((main && window.location.pathname.match(/\/giveaways\/won/)) || userWon) {
 					lastPage = Math.ceil(
@@ -126,39 +115,6 @@ class GeneralLastPageLink extends Module {
 			}
 		}
 		return lastPage;
-	}
-
-	lpl_addDiscussionLink() {
-		let lastLink, url;
-		url = `${window.location.pathname.replace('/search', '')}/search?page=${this.esgst.lastPage}`;
-		this.esgst.lastPageLink = [
-			{
-				attributes: {
-					['data-page-number']: this.esgst.lastPage,
-					href: url,
-				},
-				type: 'a',
-				children: [
-					{
-						text: 'Last',
-						type: 'span',
-					},
-					{
-						attributes: {
-							class: 'fa fa-angle-double-right',
-						},
-						type: 'i',
-					},
-				],
-			},
-		];
-		lastLink = this.esgst.paginationNavigation.lastElementChild;
-		if (
-			!lastLink.classList.contains('is-selected') &&
-			!lastLink.querySelector('.fa-angle-double-right')
-		) {
-			createElements(this.esgst.paginationNavigation, 'beforeend', this.esgst.lastPageLink);
-		}
 	}
 
 	lpl_addUserLink() {

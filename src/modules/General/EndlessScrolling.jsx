@@ -225,7 +225,10 @@ class GeneralEndlessScrolling extends Module {
 					let LastPage = (await FetchRequest.get(`${this.esgst.searchUrl}last`)).html;
 					this.esgst.pagination.firstElementChild.firstElementChild.textContent = LastPage.body.getElementsByClassName('pagination__results')[0].firstElementChild.innerHTML;
 					this.esgst.pagination.firstElementChild.firstElementChild.nextElementSibling.textContent = LastPage.body.getElementsByClassName('pagination__results')[0].firstElementChild.nextElementSibling.innerHTML;
-					es.currentPage = this.esgst.modules.generalLastPageLink.lpl_getLastPage(LastPage);
+					es.currentPage = Math.ceil(
+						parseInt(this.esgst.pagination.firstElementChild.firstElementChild.textContent.replace(/,/g, '')) /
+						25
+					);
 					es.pageBase = es.currentPage + 1;
 				}
 				es.nextPage = es.currentPage;
