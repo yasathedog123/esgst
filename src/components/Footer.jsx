@@ -65,7 +65,7 @@ class SgFooter extends IFooter {
 	 * @param {HTMLElement} context
 	 */
 	parse(context) {
-		const outerNode = context.querySelector('.footer__outer-wrap');
+		const outerNode = context.querySelector('footer');
 
 		if (!outerNode) {
 			throw 'No footer present.';
@@ -76,14 +76,19 @@ class SgFooter extends IFooter {
 		}
 
 		this.nodes.outer = outerNode;
-		this.nodes.inner = this.nodes.outer.querySelector('.footer__inner-wrap');
+		this.nodes.inner = this.nodes.outer.querySelector('.footer_lower');
 		this.nodes.nav = this.nodes.inner;
-		this.nodes.leftNav = this.nodes.nav.querySelector(':scope > div:first-child');
-		this.nodes.rightNav = this.nodes.nav.querySelector(':scope > div:last-child');
+		DOM.insert(
+			this.nodes.nav,
+			'afterbegin',
+			<div ref={(ref) => (this.nodes.leftNav = ref)} style="flex: 1;"></div>
+		);
+		this.nodes.leftNav.appendChild(this.nodes.nav.querySelector('.footer_steam'));
+		this.nodes.rightNav = this.nodes.nav.querySelector('.footer_sites');
 
 		const linkContainerNodes = [
-			...Array.from(this.nodes.leftNav.querySelectorAll(':scope > div')),
-			...Array.from(this.nodes.rightNav.querySelectorAll(':scope > div')),
+			...Array.from(this.nodes.leftNav.querySelectorAll(':scope > a')),
+			...Array.from(this.nodes.rightNav.querySelectorAll(':scope > a')),
 		];
 
 		for (const linkContainerNode of linkContainerNodes) {
