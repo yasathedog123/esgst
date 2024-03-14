@@ -206,7 +206,7 @@ import { runSilentSync } from './modules/Sync';
 			Settings.get('urlr') &&
 			window.location.pathname.match(/^\/(giveaway|discussion|support\/ticket|trade)\/.{5}$/)
 		) {
-			window.location.href = `${window.location.href}/`;
+			window.location.href = `${window.location.origin}${window.location.pathname.match(/\/(giveaway|discussion|support\/ticket|trade)\/.{5}$/)[0]}/`;
 		}
 
 		for (const key in esgst.paths) {
