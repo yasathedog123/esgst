@@ -1,6 +1,7 @@
 import { Module } from '../../class/Module';
 import { Shared } from '../../class/Shared';
 import { DOM } from '../../class/DOM';
+import { Settings } from '../../class/Settings';
 
 class GeneralFixedFooter extends Module {
 	constructor() {
@@ -13,6 +14,34 @@ class GeneralFixedFooter extends Module {
 					</li>
 				</ul>
 			),
+			features: {
+				ff_t: {
+					description: () => (
+						<fragment>
+							<ul>
+								<li>
+									Removes upper portion to reduce the height of the footer.
+								</li>
+								<li>
+									Add your own links with{' '}
+									{Shared.common.getFeatureName(null, 'chfl')} , to enable now click{' '}
+									<a
+										className="table__column__secondary-link"
+										href={`${Shared.esgst.settingsUrl}&id=chfl`}
+										target="_blank"
+									>
+										here
+									</a>
+									.
+								</li>
+							</ul>
+						</fragment>
+					),
+					name: 'Thin Footer.',
+					sg: true,
+					st: true,
+				},
+			},
 			id: 'ff',
 			name: 'Fixed Footer',
 			sg: true,
@@ -27,6 +56,9 @@ class GeneralFixedFooter extends Module {
 		}
 
 		Shared.footer.nodes.outer.classList.add('esgst-ff');
+		if (Settings.get('ff_t')) {
+			Shared.footer.nodes.outer.classList.add('esgst-thin');
+		}
 	}
 }
 

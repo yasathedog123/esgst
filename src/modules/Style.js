@@ -1499,8 +1499,22 @@ function addStyle() {
 		z-index: 997;
 	}
 
-	.esgst-ff >* {
-		padding: 15px 25px;
+	.esgst-ff.esgst-thin .footer_upper, .esgst-ff.esgst-thin .footer_columns {
+		display: none;
+	}
+
+	.esgst-ff.esgst-thin .footer_lower, .esgst-ff.esgst-thin .footer_lower .footer_inner_wrap {
+		border-top: none;
+		box-shadow: none;
+		padding: 12px 25px;
+	}
+
+	.esgst-ff.esgst-thin .footer_upper + .footer_lower .footer_inner_wrap {
+		padding: 0px;
+	}
+
+	footer .footer_sites {
+		gap: 15px;
 	}
 
 	.esgst-sgac-button, .esgst-sgg-button {
