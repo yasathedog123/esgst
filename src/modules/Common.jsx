@@ -2284,7 +2284,7 @@ class Common extends Module {
 	}
 
 	async checkMissingDiscussions(refresh, callback) {
-		let rows = document.getElementsByClassName('table__rows');
+		let rows = document.querySelectorAll('.table > .table__rows');
 		let numDiscussions = 0;
 		let numDeals = 0;
 		let filteredDiscussions = 0;
