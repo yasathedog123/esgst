@@ -21,6 +21,8 @@ class GeneralNarrowSidebar extends Module {
 		if (!this.esgst.sidebar) return;
 		this.esgst.sidebar.classList.remove('sidebar--wide');
 		this.esgst.sidebar.classList.add('esgst-ns');
+		this.esgst.sidebar.style.minWidth = `206px`;
+		this.esgst.sidebar.style.width = `206px`;
 	}
 }
 
