@@ -451,11 +451,7 @@ class Common extends Module {
 			this.esgst.mainPageHeading.appendChild(hideButtonsRight);
 		}
 		this.reorderButtons(this.esgst);
-		if (document.readyState === 'complete') {
-			this.processHash();
-		} else {
-			document.addEventListener('readystatechange', () => this.processHash());
-		}
+		this.processHash();		
 		window.addEventListener('beforeunload', this.checkBusy.bind(this));
 		window.addEventListener('hashchange', this.goToComment.bind(this, null, null, false));
 
@@ -6210,6 +6206,29 @@ class Common extends Module {
 
 		return feature;
 	}
+
+	moveAdsDown = (obj) => {
+		if (!Shared.common.isCurrentPath('Browse Giveaways')) {
+			return;
+		}
+		let adNode;
+		obj.mainContext = this.esgst.pagination.previousElementSibling;
+		for (const node of obj.mainContext.children) {
+			if (
+				node.classList.contains('giveaway__row-outer-wrap') ||
+				node.classList.contains('esgst-es-page-divider')
+			) {
+				continue;
+			}
+			if (!adNode) {
+				adNode = node;
+			}
+			node.remove();
+		}
+		if (adNode) {
+			obj.mainContext.appendChild(adNode);
+		}
+	};
 }
 
 // Singleton

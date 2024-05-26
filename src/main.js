@@ -94,14 +94,15 @@ import { runSilentSync } from './modules/Sync';
 		esgst.users = JSON.parse(esgst.storage.users);
 		esgst.winners = JSON.parse(esgst.storage.winners);
 
-		if (document.readyState === 'complete') {
+		function initializeOnDOMReady() {
 			load();
+			document.removeEventListener('DOMContentLoaded', initializeOnDOMReady);
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', initializeOnDOMReady);
 		} else {
-			document.addEventListener('readystatechange', (e) => {
-				if (e.target && e.target.readyState === 'complete') {
-					load();
-				}
-			});
+			load();
 		}
 	}
 
@@ -286,6 +287,11 @@ import { runSilentSync } from './modules/Sync';
 		common.checkNewVersion();
 
 		await common.loadFeatures(esgst.modules);
+
+		if (common.isCurrentPath('Browse Giveaways') && !Settings.get(`es`).enabled) {
+			common.moveAdsDown(document.body);
+		}
+
 	}
 
 	init().catch((err) => console.log(err));

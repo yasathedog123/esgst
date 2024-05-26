@@ -48,9 +48,10 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 	}
 
 	async init() {
-		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && this.esgst.activeDiscussions && !Settings.get('oadd')) {
-		await Shared.common.checkMissingDiscussions();
+		if (!(this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath || this.esgst.activeDiscussions) || Settings.get('oadd')) {
+			return;
 		}
+		await Shared.common.checkMissingDiscussions();
 	}
 
 	adots_load(refresh) {
@@ -71,9 +72,9 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 			rows;
 		if (this.esgst.activeDiscussions) {
 			if (!refresh) {
-				this.esgst.activeDiscussions.classList.remove('widget-container--margin-top');
+				this.esgst.activeDiscussions.style.marginTop = '0px';
 				this.esgst.activeDiscussions.classList.add('esgst-adots');
-				if (this.esgst.sidebar && Settings.get(`adtd_sg`).enabled) {
+				if (Settings.get(`adtd_sg`).enabled) {
 					this.esgst.modules.discussionsActiveDiscussionsToDisplay.adtd_remove();
 				}
 			}
@@ -121,7 +122,7 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 					DOM.insert(
 						this.esgst.sidebar,
 						'beforeend',
-						<h3 className="sidebar__heading" ref={(ref) => (panel = ref)}>
+						<h3 className="sidebar__heading esgst-adots-heading" ref={(ref) => (panel = ref)}>
 							<span
 								className="esgst-adots-tab-heading esgst-selected"
 								ref={(ref) => (tabHeading1 = ref)}
@@ -264,7 +265,7 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 					DOM.insert(
 						this.esgst.sidebar,
 						'beforeend',
-						<div ref={(ref) => (activeDiscussions = ref)}></div>
+						<div ref={(ref) => (activeDiscussions = ref)} className="esgst-adots-container"></div>
 					);
 					activeDiscussions.appendChild(discussions);
 					activeDiscussions.appendChild(deals);
@@ -278,6 +279,10 @@ class DiscussionsActiveDiscussionsOnTopSidebar extends Module {
 					);
 					this.esgst.activeDiscussions.remove();
 					this.esgst.activeDiscussions = activeDiscussions;
+					const fanaticalContainer = document.querySelector(".sidebar .fanatical_container");
+					if (this.esgst.sidebar && fanaticalContainer) {
+						this.esgst.sidebar.appendChild(fanaticalContainer.parentElement);
+					}
 				}
 			}
 		}
