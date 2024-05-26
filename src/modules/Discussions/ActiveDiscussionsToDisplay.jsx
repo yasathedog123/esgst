@@ -17,11 +17,10 @@ class DiscussionsActiveDiscussionsToDisplay extends Module {
 				{
 					id: 'activeDiscussions_displayed',
 					prefix: 'Number of active discussions to display ',
-					suffix: '(min 1 , max 7)',
+					suffix: '( More than 7 will require an additional page request. )',
 					attributes: {
 						type: 'number',
 						min: '1',
-						max: '7',
 						step: '1',
 					},
 				},
@@ -35,22 +34,34 @@ class DiscussionsActiveDiscussionsToDisplay extends Module {
 	}
 
 	init() {
-		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && this.esgst.activeDiscussions && !(Settings.get('oadd') || Settings.get('adots'))) {
-			this.adtd_remove();
+		if (!(this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath || this.esgst.activeDiscussions) || (Settings.get('oadd') || Settings.get('adots'))) {
+			return;
 		}
+		this.adtd_remove();
 	}
 
 	adtd_remove() {
 		if (this.esgst.activeDiscussions) {
-			let leftSide = this.esgst.activeDiscussions.firstElementChild.querySelector('.table');
-			let rightSide = this.esgst.activeDiscussions.lastElementChild.querySelector('.table');
-			while (leftSide.firstElementChild.children.length > Settings.get('activeDiscussions_displayed')) {
-				leftSide.firstElementChild.lastChild.remove();
-				rightSide.firstElementChild.lastChild.remove();
+			const activeDiscussions = this.esgst.activeDiscussions;
+			const activeDiscussionsDisplayed = Settings.get('activeDiscussions_displayed');
+			const adotsIndex = Settings.get('adots_index');
+			const leftSide = activeDiscussions.firstElementChild.querySelector('.table');
+			const rightSide = activeDiscussions.lastElementChild.querySelector('.table');
+			const leftSideChildren = Array.from(leftSide.firstElementChild.children);
+			const rightSideChildren = Array.from(rightSide.firstElementChild.children);
+			const discussionsToRemove = Math.max(leftSideChildren.length, rightSideChildren.length) - activeDiscussionsDisplayed;
+
+			for (let i = 0; i < discussionsToRemove; i++) {
+				leftSideChildren[leftSideChildren.length - 1 - i].remove();
+				rightSideChildren[rightSideChildren.length - 1 - i].remove();
 			}
-			let element = leftSide.getBoundingClientRect();
-			leftSide.style.minHeight = `${element.height}px`;
-			rightSide.style.minHeight = `${element.height}px`;
+
+			const leftSideHeight = leftSide.getBoundingClientRect().height;
+			const rightSideHeight = rightSide.getBoundingClientRect().height;
+			const adjustment = adotsIndex === 0 ? 0 : activeDiscussionsDisplayed * 14;
+
+			leftSide.style.minHeight = `${leftSideHeight - adjustment}px`;
+			rightSide.style.minHeight = `${rightSideHeight - adjustment}px`;
 		}
 	}
 }

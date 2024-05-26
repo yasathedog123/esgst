@@ -24,12 +24,13 @@ class DiscussionsReversedActiveDiscussions extends Module {
 	}
 
 	async init() {
-		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && this.esgst.activeDiscussions && !Settings.get('oadd')) {
-			Shared.esgst.activeDiscussions.insertBefore(
-				Shared.esgst.activeDiscussions.lastElementChild,
-				Shared.esgst.activeDiscussions.firstElementChild
-			);
+		if (!(this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath || this.esgst.activeDiscussions) || Settings.get('oadd')) {
+			return;
 		}
+		Shared.esgst.activeDiscussions.insertBefore(
+			Shared.esgst.activeDiscussions.lastElementChild,
+			Shared.esgst.activeDiscussions.firstElementChild
+		);
 	}
 }
 

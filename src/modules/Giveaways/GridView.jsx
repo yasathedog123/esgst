@@ -276,7 +276,7 @@ class GiveawaysGridView extends Module {
 			temp.firstElementChild.firstElementChild.appendChild(giveaway.creatorContainer);
 			temp.firstElementChild.appendChild(giveaway.links);
 			temp.appendChild(giveaway.avatar);
-			giveaway.panelFlexbox.insertBefore(giveaway.endTimeColumn.nextElementSibling, giveaway.panel);
+			temp.after(giveaway.endTimeColumn.nextElementSibling);
 			giveaway.endTimeColumn.classList.add('esgst-hidden');
 			giveaway.startTimeColumn.classList.add('esgst-hidden');
 			giveaway.entriesLink.lastElementChild.textContent = giveaway.entriesLink.textContent.replace(

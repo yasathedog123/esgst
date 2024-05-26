@@ -647,7 +647,7 @@ function addStyle() {
 		margin-top: 50px;
 	}
 
-	.esgst-ns * {
+	.esgst-ns, .esgst-ns * {
 		max-width: 206px;
 	}
 
@@ -1496,7 +1496,7 @@ function addStyle() {
 		bottom: 0;
 		padding: 0;
 		position: sticky;
-		z-index: 997;
+		z-index: 999;
 	}
 
 	.esgst-ff.esgst-thin .footer_upper, .esgst-ff.esgst-thin .footer_columns {
@@ -2330,7 +2330,7 @@ function addStyle() {
 	}
 
 	.sidebar .esgst-adots {
-		margin: 0;
+		margin-bottom: 15px;
 		max-height: 300px;
 		max-width: 336px;
 		overflow: auto;
@@ -2355,8 +2355,7 @@ function addStyle() {
 	}
 
 	.sidebar .esgst-adots .table__row-outer-wrap {
-		padding: 0 !important;
-		padding-bottom: 5px !important;
+		padding: 3px 0 !important;
 		border: 0;
 		box-shadow: none;
 	}

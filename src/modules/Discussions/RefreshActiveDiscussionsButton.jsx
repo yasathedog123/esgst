@@ -27,9 +27,10 @@ class DiscussionsRefreshActiveDiscussionsButton extends Module {
 	}
 
 	init() {
-		if ((this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath) && (this.esgst.activeDiscussions) && !(Settings.get('oadd') || Settings.get('adots'))) {
-			this.radb_addButtons();
+		if (!(this.esgst.giveawaysPath || this.esgst.discussionPath || this.esgst.giveawayPath || this.esgst.activeDiscussions) || (Settings.get('oadd') || Settings.get('adots'))) {
+			return;
 		}
+		this.radb_addButtons();
 	}
 
 	radb_addButtons() {
