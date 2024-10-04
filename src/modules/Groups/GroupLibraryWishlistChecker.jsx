@@ -275,6 +275,7 @@ class GroupsGroupLibraryWishlistChecker extends Module {
 				glwc.progressBar.setMessage(`Retrieving libraries/wishlists (${i + 1} of ${n})...`);
 				if (!glwc.id || glwc.members.indexOf(glwc.users[i].steamId) >= 0) {
 					try {
+						glwc.users[i].failed = [];
 						glwc.users[i].library = [];
 						let elements = (
 							await FetchRequest.get(
@@ -366,18 +367,31 @@ class GroupsGroupLibraryWishlistChecker extends Module {
 					window.setTimeout(() => this.glwc_getGames(glwc, ++i, n), 0);
 				}
 			} catch (err) {
-				Logger.error(err);
-				glwc.progressBar.setError('An error happened (check the console log).');
-				glwc.overallProgressBar.destroy();
+				glwc.users[i].failed.push(
+					`<a class="table__column__secondary-link" href="https://steamcommunity.com/profiles/${glwc.users[i].steamId}">${glwc.users[i].username}</a>`
+				);
+				window.setTimeout(() => this.glwc_getGames(glwc, ++i, n), 0);
 			}
 		} else {
-			glwc.progressBar.destroy();
-			glwc.overallProgressBar.destroy();
 			this.glwc_showResults(glwc);
 		}
 	}
 
 	glwc_showResults(glwc) {
+		const failedUsers = [...new Set(glwc.users.flatMap(user => user.failed.length > 0 ? user.failed : []))];
+		if (failedUsers.length > 0) {
+			glwc.progressBar.setWarning(`${failedUsers.length} users were not retrieved. Possibly games, wishlists or profile are private. (Hover to view details)`);
+			const popout = createTooltip(
+				glwc.container.querySelector('.notification--warning'),
+				failedUsers.join(`, `),
+				true
+			);
+			popout.onFirstOpen = () => Shared.common.endless_load(popout.popout);
+		} else {
+			glwc.progressBar.destroy();
+		}
+		glwc.overallProgressBar.destroy();
+
 		let game,
 			i,
 			id,

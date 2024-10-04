@@ -1653,6 +1653,11 @@ function addStyle() {
 		max-width: 400px;
 	}
 
+	.esgst-feature-description.esgst-popout > a {
+	    line-height: 18px;
+		margin: 2px;
+	}
+
 	.esgst-gm-giveaway.error {
 		background-color: rgba(236, 133, 131, 0.5);
 	}
