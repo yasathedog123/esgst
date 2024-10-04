@@ -243,6 +243,7 @@ class _Settings {
 			hr_g_format: '🏆',
 			hr_w_format: `(#❤)`,
 			hr_p_format: `(#P)`,
+			hr_fp_points: 400,
 			ef_filters: '',
 			gwc_h_width: '3px',
 			gwr_h_width: '3px',

@@ -115,13 +115,29 @@ class GeneralHeaderRefresher extends Module {
 				},
 				hr_fp: {
 					features: {
+						hr_fp_p: {
+							name: 'Minimum number of points required to show a browser notification.',
+							inputItems: [
+								{
+									id: 'hr_fp_points',
+									prefix: 'Notify when points reach ',
+									attributes: {
+										type: 'number',
+										min: '1',
+										max: '400',
+										step: '1',
+									},
+								},
+							],
+							sg: true,
+						},
 						hr_fp_s: {
 							name: 'Play a sound with this notification.',
 							inputItems: true,
 							sg: true,
 						},
 					},
-					name: 'Show a browser notification if there are 400P or more.',
+					name: 'Show a browser notification when points reach a specified threshold.',
 					sg: true,
 				},
 				hr_p: {
@@ -470,7 +486,7 @@ class GeneralHeaderRefresher extends Module {
 	}
 
 	notifyPoints(firstRun, oldPoints, newPoints) {
-		if (oldPoints < 400 && newPoints >= 400 && Settings.get('hr_fp') && !firstRun) {
+		if (oldPoints < 400 && newPoints >= Settings.get('hr_fp_points') && Settings.get('hr_fp') && !firstRun) {
 			this.showNotification({
 				msg: `You have ${newPoints}P.`,
 				points: true,
