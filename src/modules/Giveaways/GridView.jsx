@@ -16,7 +16,7 @@ class GiveawaysGridView extends Module {
 			description: () => (
 				<ul>
 					<li>
-						Turns each giveaway in the main page, game pages, profile pages and some popups(
+						Turns each giveaway in the main page, groups, game pages, profile pages and some popups(
 						<span data-esgst-feature-id="gb"></span>, <span data-esgst-feature-id="ged"></span> and{' '}
 						<span data-esgst-feature-id="ge"></span>) into a small box where only the game's image
 						is shown. Overlaying the image you will find the start/end times, type and level of the
@@ -79,6 +79,10 @@ class GiveawaysGridView extends Module {
 					name: 'Extend to Profile.',
 					sg: true,
 				},
+				gv_grp: {
+					name: 'Extend to Groups.',
+					sg: true,
+				},
 			},
 			id: 'gv',
 			name: 'Grid View',
@@ -94,7 +98,8 @@ class GiveawaysGridView extends Module {
 			Settings.get('gv_ged') ||
 			Settings.get('gv_ge') ||
 			Settings.get('gv_gp') ||
-			Settings.get('gv_pro')
+			Settings.get('gv_pro') ||
+			Settings.get('gv_grp')
 		) {
 			this.esgst.giveawayFeatures.push(this.gv_setContainer.bind(this));
 			this.esgst.style.insertAdjacentText(
@@ -112,7 +117,7 @@ class GiveawaysGridView extends Module {
 				}
 			`
 			);
-			if ((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro'))) {
+			if ((this.esgst.groupPath && Settings.get('gv_grp')) || (this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro'))) {
 				let button, display, element, elements, i, n, popout, spacing, slider;
 				button = createHeadingButton({
 					id: 'gv',
@@ -157,7 +162,7 @@ class GiveawaysGridView extends Module {
 
 	gv_setContainer(giveaways, main, source) {
 		if (
-			(!main || !((this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro')))) &&
+			(!main || !((this.esgst.groupPath && Settings.get('gv_grp')) || (this.esgst.gamePath && Settings.get('gv_gp')) || this.esgst.giveawaysPath || (this.esgst.userPath && Settings.get('gv_pro')))) &&
 			(main ||
 				((source !== 'gb' || !Settings.get('gv_gb')) &&
 					(source !== 'ged' || !Settings.get('gv_ged')) &&
