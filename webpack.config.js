@@ -418,14 +418,6 @@ function getWebpackConfig(env, name) {
 		if (env.analyze) {
 			config.plugins.push(new plugins.bundleAnalyzer());
 		}
-		config.plugins.push(
-			new plugins.provide({
-				$: 'jquery',
-				'window.$': 'jquery',
-				jQuery: 'jquery',
-				'window.jQuery': 'jquery',
-			})
-		);
 	} else {
 		config.entry = { './userscript/esgst.user': ['./src/entry/gm_index.js'] };
 		config.optimization = { minimize: false };
@@ -462,6 +454,12 @@ function getWebpackConfig(env, name) {
 			entryOnly: true,
 			raw: true,
 			test: /user\.js$/,
+		}),
+		new plugins.provide({
+			$: 'jquery',
+			'window.$': 'jquery',
+			jQuery: 'jquery',
+			'window.jQuery': 'jquery',
 		}),
 		new plugins.clean({ cleanOnceBeforeBuildPatterns }),
 		new plugins.runAfterBuild(() => runFinalSteps(env, name))
