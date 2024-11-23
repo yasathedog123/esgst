@@ -149,7 +149,7 @@ function getLegacyExtensionManifest(env, browserName) {
 		version: packageJson.version,
 		description: packageJson.description,
 		author: packageJson.author,
-		id: 'addon@esgst',
+		id: 'ESGST@potatoe.edition',
 		keywords: ['jetpack'],
 		license: 'MIT',
 		main: 'index.js',

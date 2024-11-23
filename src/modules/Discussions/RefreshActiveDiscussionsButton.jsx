@@ -34,6 +34,9 @@ class DiscussionsRefreshActiveDiscussionsButton extends Module {
 	}
 
 	radb_addButtons() {
+		if (this.radb_buttonsAdded) return;
+		this.radb_buttonsAdded = true;
+
 		let elements, i;
 		elements = this.esgst.activeDiscussions.querySelectorAll(
 			`.block_header, .esgst-heading-button`

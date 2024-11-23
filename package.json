@@ -1,17 +1,17 @@
 {
 	"name": "esgst",
-	"version": "8.9.4",
-	"betaVersion": "8.10.0-beta.11",
-	"title": "Enhanced SteamGifts & SteamTrades (ESGST)",
+	"version": "8.10.0",
+	"betaVersion": "8.10.0",
+	"title": "Enhanced SteamGifts & SteamTrades (ESGST Potatoe edition)",
 	"description": "A script that adds some cool features to SteamGifts and SteamTrades.",
 	"author": "rafaelgomesxyz",
-	"homepage": "https://github.com/rafaelgomesxyz/esgst",
+	"homepage": "https://github.com/SquishedPotatoe/esgst",
 	"bugs": {
-		"url": "https://github.com/rafaelgomesxyz/esgst/issues"
+		"url": "https://github.com/SquishedPotatoe/esgst/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/rafaelgomesxyz/esgst.git"
+		"url": "git+https://github.com/SquishedPotatoe/esgst.git"
 	},
 	"scripts": {
 		"build": "webpack --env.production",

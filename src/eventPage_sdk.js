@@ -51,12 +51,13 @@ RequestQueue.getRequestLog = async () => {
 
 const loadStorage = () => handle_storage(TYPE_GET, null).then((result) => (storage = result));
 
-if (window.document.readyState === 'loading') {
-	window.document.addEventListener('readystatechange', (e) => {
-		if (e.target && e.target.readyState !== 'loading') {
-			load();
-		}
-	});
+function initializeOnDOMReady() {
+	load();
+	document.removeEventListener('DOMContentLoaded', initializeOnDOMReady);
+}
+
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', initializeOnDOMReady);
 } else {
 	load();
 }
