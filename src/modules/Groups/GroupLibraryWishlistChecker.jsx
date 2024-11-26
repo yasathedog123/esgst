@@ -277,7 +277,7 @@ class GroupsGroupLibraryWishlistChecker extends Module {
 					try {
 						glwc.users[i].failed = [];
 						glwc.users[i].library = [];
-						let elements = (
+						const elements = (
 							await FetchRequest.get(
 								`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${Settings.get(
 									'steamApiKey'
@@ -313,40 +313,35 @@ class GroupsGroupLibraryWishlistChecker extends Module {
 						/**/
 					}
 					glwc.users[i].wishlist = [];
-					const response = await FetchRequest.get(
-						`http://store.steampowered.com/wishlist/profiles/${glwc.users[i].steamId}`
-					);
-					let wishlistData = response.text.match(/g_rgWishlistData\s=\s(\[(.+?)]);/);
+					const wishlistData = (
+						await FetchRequest.get(
+							`https://api.steampowered.com/IWishlistService/GetWishlist/v1/?steamid=${glwc.users[i].steamId}&format=json`
+						)
+					).json.response.items;
 					if (wishlistData) {
-						let appInfo = response.text.match(/g_rgAppInfo\s=\s({(.+?)});/);
-						let games = appInfo ? JSON.parse(appInfo[1]) : null;
-						const wishlistGames = JSON.parse(wishlistData[1]);
 						const maxWishlists = Settings.get('glwc_checkMaxWishlists')
 							? parseInt(Settings.get('glwc_maxWishlists'))
 							: Infinity;
-						if (wishlistGames.length <= maxWishlists) {
-							wishlistGames.forEach((item) => {
+						if (wishlistData.length <= maxWishlists) {
+							wishlistData.forEach((item) => {
 								let id = item.appid;
 								let game = { id };
-								if (games && games[id]) {
-									game.logo = games[id].capsule;
-									game.name = games[id].name;
-								} else {
-									game.logo = `https://steamcdn-a.akamaihd.net/steam/apps/${id}/header.jpg`;
+								game.logo = `https://steamcdn-a.akamaihd.net/steam/apps/${id}/header.jpg`;
 
-									if (Shared.esgst.appList) {
-										const name = Shared.esgst.appList[item.appid];
+								if (Shared.esgst.appList) {
+									const name = Shared.esgst.appList[item.appid];
 
-										if (name) {
-											game.name = name;
-										}
-									}
-
-									if (!game.name) {
-										game.name = `${id}`;
+									if (name) {
+										game.name = name;
 									}
 								}
+
+								if (!game.name) {
+									game.name = `${id}`;
+								}
+
 								if (glwc.games[id]) {
+
 									if (game.logo && game.name) {
 										glwc.games[id].logo = game.logo;
 										glwc.games[id].name = game.name;
@@ -360,6 +355,10 @@ class GroupsGroupLibraryWishlistChecker extends Module {
 								glwc.users[i].wishlist.push(parseInt(id));
 							});
 						}
+					} else {
+						glwc.users[i].failed.push(
+							`<a class="table__column__secondary-link" href="https://steamcommunity.com/profiles/${glwc.users[i].steamId}">${glwc.users[i].username}</a>`
+						);
 					}
 					glwc.memberCount += 1;
 					window.setTimeout(() => this.glwc_getGames(glwc, ++i, n), 0);

@@ -1566,12 +1566,13 @@ async function syncGames(altAccount, syncer, apiResponse, storeResponse) {
 
 		// get the wishlisted dates
 		try {
-			const response = await FetchRequest.get(
-				`http://store.steampowered.com/wishlist/profiles/${Settings.get('steamId')}?cc=us&l=english`
-			);
-			const match = response.text.match(/g_rgWishlistData\s=\s(\[(.+?)]);/);
-			if (match) {
-				JSON.parse(match[1]).forEach((item) => {
+			const wishlistData = (
+				await FetchRequest.get(
+					`https://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=${Settings.get('steamApiKey')}&steamid=${Settings.get('steamId')}&format=json`
+				)
+			).json.response.items;
+			if (wishlistData) {
+				wishlistData.forEach((item) => {
 					/**
 					 * @property {string} item.appid
 					 * @property {boolean} item.added
@@ -1580,11 +1581,11 @@ async function syncGames(altAccount, syncer, apiResponse, storeResponse) {
 					if (!savedGames.apps[id]) {
 						savedGames.apps[id] = {};
 					}
-					savedGames.apps[id].wishlisted = item.added;
+					savedGames.apps[id].wishlisted = item.date_added;
 				});
 			}
 		} catch (e) {
-			/**/
+			console.error('Error fetching wishlist data:', e);
 		}
 	}
 

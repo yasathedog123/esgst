@@ -287,24 +287,20 @@ class TradesHaveWantListChecker extends Module {
 		if (key === 'want') {
 			try {
 				const steamId = document.querySelector('.author_name').getAttribute('href').match(/\d+/)[0];
-				const response = await FetchRequest.get(
-					`http://store.steampowered.com/wishlist/profiles/${steamId}`
-				);
-				const wishlistData = response.text.match(/g_rgWishlistData\s=\s(\[(.+?)]);/);
+				const wishlistData = (
+					await FetchRequest.get(
+						`https://api.steampowered.com/IWishlistService/GetWishlist/v1/?steamid=${steamId}&format=json`
+					)
+				).json.response.items;
 				if (wishlistData) {
-					const appInfo = response.text.match(/g_rgAppInfo\s=\s({(.+?)});/);
-					JSON.parse(wishlistData[1]).forEach((item) => {
+					wishlistData.forEach((item) => {
 						const id = parseInt(item.appid);
 						const found = obj.games[key].apps.filter((x) => x.id === id)[0];
 						if (found) {
 							found.wishlisted = true;
 							return;
 						}
-						const app = appInfo
-							? JSON.parse(appInfo[1])[id]
-							: json
-							? json.applist.apps.filter((x) => parseInt(x.appid) === id)[0]
-							: null;
+						const app = json.applist.apps.filter((x) => parseInt(x.appid) === id)[0] || null;
 						if (app) {
 							obj.games[key].apps.push({
 								id,
