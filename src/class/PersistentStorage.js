@@ -8,7 +8,7 @@ import { browser } from '../browser';
 
 class PersistentStorage {
 	constructor() {
-		this.currentVersion = 14;
+		this.currentVersion = 15;
 
 		this.defaultValues = {
 			decryptedGiveaways: '{}',
@@ -828,6 +828,47 @@ class PersistentStorage {
 
 			if (Utils.isSet(settings.chfl_footer_st)) {
 				settings.chfl_footer_st.push('steamtrades', 'steamgifts');
+
+				settingsChanged = true;
+			}
+
+			if (settingsChanged) {
+				toSet.settings = JSON.stringify(settings);
+				storage.settings = toSet.settings;
+			}
+		}
+
+		if (version < 15) {
+			window.console.log('Upgrading storage to version 15...');
+
+			let settingsChanged = false;
+
+			const settings = JSON.parse(storage.settings);
+
+			if (Utils.isSet(settings.chfl_discussions_sg)) {
+				settings.chfl_discussions_sg = settings.chfl_discussions_sg.map((item) => {
+					if (typeof item === 'string') {
+						return item;
+					}
+					if (item.id === 'browseAddonsTools') {
+						item.id = 'browseAdd';
+						return item;
+					}
+					if (item.id === 'browseOff') {
+						item.id = 'browseOffTopic';
+						return item;
+					}
+					if (item.id === 'browseMoviesTv') {
+						item.id = 'browseMovies';
+						return item;
+					}
+					if (item.id === 'browseWhitelistRecruitment') {
+						item.id = 'browseWhitelist';
+						return item;
+					}
+					console.log(item);
+					return item;
+				});
 
 				settingsChanged = true;
 			}

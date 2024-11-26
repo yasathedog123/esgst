@@ -300,7 +300,7 @@ class _Settings {
 				'viewCreated',
 				'viewBookmarked',
 				{
-					id: 'browseAddonsTools',
+					id: 'browseAdd',
 					name: 'Browse Add-ons / Tools',
 					url: '/discussions/addons-tools',
 				},
@@ -333,8 +333,8 @@ class _Settings {
 					name: "Browse Let's Play Together",
 					url: '/discussions/lets-play-together',
 				},
-				{ id: 'browseMoviesTv', name: 'Browse Movies / TV', url: '/discussions/movies-tv' },
-				{ id: 'browseOff', name: 'Browse Off Topic', url: '/discussions/off-topic' },
+				{ id: 'browseMovies', name: 'Browse Movies / TV', url: '/discussions/movies-tv' },
+				{ id: 'browseOffTopic', name: 'Browse Off Topic', url: '/discussions/off-topic' },
 				{
 					id: 'browsePuzzles',
 					name: 'Browse Puzzles / Events',
@@ -351,7 +351,7 @@ class _Settings {
 					url: '/discussions/user-projects',
 				},
 				{
-					id: 'browseWhitelistRecruitment',
+					id: 'browseWhitelist',
 					name: 'Browse Whitelist / Recruitment',
 					url: '/discussions/whitelist-recruitment',
 				},
