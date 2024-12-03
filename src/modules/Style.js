@@ -1682,13 +1682,13 @@ function addStyle() {
 		margin: 5px;
 	}
 
-	.sidebar .esgst-button {
-		margin-bottom: 5px;
-		width: 304px;
-	}
-
 	.esgst-button.sidebar__entry-delete, .esgst-button.sidebar__error {
 		display: inline-block;
+	}
+
+	.sidebar .esgst-button {
+		margin-bottom: 5px;
+		display:block;
 	}
 
 	.esgst-button-group {
