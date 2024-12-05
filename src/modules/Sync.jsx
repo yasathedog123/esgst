@@ -429,24 +429,19 @@ async function sync(syncer) {
 		(syncer.parameters && syncer.parameters.HiddenGames) ||
 		(!syncer.parameters && Settings.get('syncHiddenGames'))
 	) {
-		if (now - Settings.get('lastSyncHiddenGames') > 2592000000) {
+		if (now - Settings.get('lastSyncHiddenGames') > 0) {
 			if (Settings.get('lastPageHiddenGames') === 0) {
 				const doContinue = await Shared.common.createConfirmationAsync(
 					`WARNING: You are going to sync your hidden games. This is a process that may take a very long time, depending on how many games you have on your list, as the requests will be limited to 1 per second to avoid making a lot of requests to SteamGifts in a short period of time. Also keep in mind that this is a cumulative sync, which means that if you cancel the sync and sync again later, it will pick up from where it left off.${
 						Settings.get('lastSyncHiddenGames') > 0
-							? ' Since you have already synced your hidden games once before, you do not need to do it ever again, because ESGST detects when you add/remove a game to/from the list and automatically updates your data.'
+							? ` It's a good idea to minimize syncing to reduce unnecessary server load. Since ESGST automatically detects and updates your hidden game changes, you should only need to perform a manual sync in rare cases.`
 							: ''
-					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable hidden games sync. You can only sync your hidden games once per 30 days.`
+					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable hidden games sync.`
 				);
 				if (!doContinue) {
 					return;
 				}
 			}
-		} else {
-			Shared.common.createAlert(
-				'WARNING: You have synced your hidden games in the last 30 days. Please disable it in order to continue.'
-			);
-			return;
 		}
 	}
 	if (
@@ -454,26 +449,21 @@ async function sync(syncer) {
 		(!syncer.parameters && (Settings.get('syncWhitelist') || Settings.get('syncBlacklist')))
 	) {
 		if (
-			now - Settings.get('lastSyncWhitelist') > 2592000000 &&
-			now - Settings.get('lastSyncBlacklist') > 2592000000
+			now - Settings.get('lastSyncWhitelist') > 0 ||
+			now - Settings.get('lastSyncBlacklist') > 0
 		) {
 			if (Settings.get('lastPageWhitelist') === 0 || Settings.get('lastPageBlacklist') === 0) {
 				const doContinue = await Shared.common.createConfirmationAsync(
 					`WARNING: You are going to sync your whitelist or blacklist. This is a process that may take a very long time, depending on how many users you have on your list, as the requests will be limited to 1 per second to avoid making a lot of requests to SteamGifts in a short period of time. Also keep in mind that this is a cumulative sync, which means that if you cancel the sync and sync again later, it will pick up from where it left off.${
 						Settings.get('lastSyncWhitelist') > 0 || Settings.get('lastSyncBlacklist') > 0
-							? ' Since you have already synced your whitelist or blacklist once before, you do not need to do it ever again, because ESGST detects when you add/remove a user to/from the list and automatically updates your data.'
+							? ` It's a good idea to minimize syncing to reduce unnecessary server load. Since ESGST automatically detects and updates your whitelist/blacklist changes, you should only need to perform a manual sync in rare cases.`
 							: ''
-					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable whitelist or blacklist sync. You can only sync your whitelist or blacklist once per 30 days.`
+					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable whitelist or blacklist sync.`
 				);
 				if (!doContinue) {
 					return;
 				}
 			}
-		} else {
-			Shared.common.createAlert(
-				'WARNING: You have synced your whitelist or blacklist in the last 30 days. Please disable it in order to continue.'
-			);
-			return;
 		}
 	}
 
@@ -645,11 +635,11 @@ async function sync(syncer) {
 	if (
 		(((syncer.parameters && syncer.parameters.Whitelist) ||
 			(!syncer.parameters && Settings.get('syncWhitelist'))) &&
-			(now - Settings.get('lastSyncWhitelist') > 2592000000 ||
+			(now - Settings.get('lastSyncWhitelist') > 0 ||
 				Settings.get('lastPageWhitelist') > 0)) ||
 		(((syncer.parameters && syncer.parameters.Blacklist) ||
 			(!syncer.parameters && Settings.get('syncBlacklist'))) &&
-			(now - Settings.get('lastSyncBlacklist') > 2592000000 ||
+			(now - Settings.get('lastSyncBlacklist') > 0 ||
 				Settings.get('lastPageBlacklist') > 0))
 	) {
 		if (
@@ -755,7 +745,7 @@ async function sync(syncer) {
 	if (
 		((syncer.parameters && syncer.parameters.HiddenGames) ||
 			(!syncer.parameters && Settings.get('syncHiddenGames'))) &&
-		(now - Settings.get('lastSyncHiddenGames') > 2592000000 ||
+		(now - Settings.get('lastSyncHiddenGames') > 0 ||
 			Settings.get('lastPageHiddenGames') > 0)
 	) {
 		syncer.progressBar.setMessage('Syncing your hidden games...');
