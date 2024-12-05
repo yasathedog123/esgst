@@ -452,7 +452,7 @@ async function sync(syncer) {
 			now - Settings.get('lastSyncWhitelist') > 0 ||
 			now - Settings.get('lastSyncBlacklist') > 0
 		) {
-			if (Settings.get('lastPageWhitelist') === 0 || Settings.get('lastPageBlacklist') === 0) {
+			if (Settings.get('lastPagewhitelisted') === 0 || Settings.get('lastPageblacklisted') === 0) {
 				const doContinue = await Shared.common.createConfirmationAsync(
 					`WARNING: You are going to sync your whitelist or blacklist. This is a process that may take a very long time, depending on how many users you have on your list, as the requests will be limited to 1 per second to avoid making a lot of requests to SteamGifts in a short period of time. Also keep in mind that this is a cumulative sync, which means that if you cancel the sync and sync again later, it will pick up from where it left off.${
 						Settings.get('lastSyncWhitelist') > 0 || Settings.get('lastSyncBlacklist') > 0
@@ -636,17 +636,17 @@ async function sync(syncer) {
 		(((syncer.parameters && syncer.parameters.Whitelist) ||
 			(!syncer.parameters && Settings.get('syncWhitelist'))) &&
 			(now - Settings.get('lastSyncWhitelist') > 0 ||
-				Settings.get('lastPageWhitelist') > 0)) ||
+				Settings.get('lastPagewhitelisted') > 0)) ||
 		(((syncer.parameters && syncer.parameters.Blacklist) ||
 			(!syncer.parameters && Settings.get('syncBlacklist'))) &&
 			(now - Settings.get('lastSyncBlacklist') > 0 ||
-				Settings.get('lastPageBlacklist') > 0))
+				Settings.get('lastPageblacklisted') > 0))
 	) {
 		if (
 			(syncer.parameters && syncer.parameters.Whitelist) ||
 			(!syncer.parameters && Settings.get('syncWhitelist'))
 		) {
-			if (Settings.get('lastPageWhitelist') === 0) {
+			if (Settings.get('lastPagewhitelisted') === 0) {
 				await Shared.common.deleteUserValues(['whitelisted', 'whitelistedDate']);
 			}
 			syncer.progressBar.setMessage('Syncing your whitelist...');
@@ -656,7 +656,7 @@ async function sync(syncer) {
 				`https://www.steamgifts.com/account/manage/whitelist/search?page=`
 			);
 			if (!syncer.canceled) {
-				await Shared.common.setSetting('lastPageWhitelist', 0);
+				await Shared.common.setSetting('lastPagewhitelisted', 0);
 			}
 		}
 
@@ -668,7 +668,7 @@ async function sync(syncer) {
 			(syncer.parameters && syncer.parameters.Blacklist) ||
 			(!syncer.parameters && Settings.get('syncBlacklist'))
 		) {
-			if (Settings.get('lastPageBlacklist') === 0) {
+			if (Settings.get('lastPageblacklisted') === 0) {
 				await Shared.common.deleteUserValues(['blacklisted', 'blacklistedDate']);
 			}
 			syncer.progressBar.setMessage('Syncing your blacklist...');
@@ -678,7 +678,7 @@ async function sync(syncer) {
 				`https://www.steamgifts.com/account/manage/blacklist/search?page=`
 			);
 			if (!syncer.canceled) {
-				await Shared.common.setSetting('lastPageBlacklist', 0);
+				await Shared.common.setSetting('lastPageblacklisted', 0);
 			}
 		}
 
