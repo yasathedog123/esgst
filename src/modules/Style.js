@@ -1870,6 +1870,10 @@ function addStyle() {
 		margin: 10px 0 0 !important;
 	}
 
+	.esgst-popup-description >*:not(.esgst-tag-suggestions):not(.page__heading):not(.page_heading):not(.esgst-notification-bar):not(.esgst-gf-container).esgst-button.form__submit-button {
+		margin-right: 8px !important;
+	}
+
 	.esgst-popup-actions {
 		color: #4b72d4;
 		margin-top: 15px;
@@ -2407,6 +2411,11 @@ function addStyle() {
 
 	.esgst-warning {
 		color: #e9202a !important;
+		font-weight: bold;
+	}
+
+	.esgst-sync-warning {
+		font-size: 20px;
 		font-weight: bold;
 	}
 

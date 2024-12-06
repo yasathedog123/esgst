@@ -432,11 +432,31 @@ async function sync(syncer) {
 		if (now - Settings.get('lastSyncHiddenGames') > 0) {
 			if (Settings.get('lastPageHiddenGames') === 0) {
 				const doContinue = await Shared.common.createConfirmationAsync(
-					`WARNING: You are going to sync your hidden games. This is a process that may take a very long time, depending on how many games you have on your list, as the requests will be limited to 1 per second to avoid making a lot of requests to SteamGifts in a short period of time. Also keep in mind that this is a cumulative sync, which means that if you cancel the sync and sync again later, it will pick up from where it left off.${
-						Settings.get('lastSyncHiddenGames') > 0
-							? ` It's a good idea to minimize syncing to reduce unnecessary server load. Since ESGST automatically detects and updates your hidden game changes, you should only need to perform a manual sync in rare cases.`
-							: ''
-					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable hidden games sync.`
+					<fragment>
+						<div className="notification notification--warning esgst-sync-warning">
+							WARNING: Syncing your hidden games may take a long time depending on the amount of games.
+						</div>
+						<br />
+						<div className="esgst-text-left">
+							The requests will be limited to 1 per second to avoid SteamGifts timing you out for 'Too Many Requests' in a short period of time.
+							<br />
+							This is a cumulative sync, so it will pick up where it left off if cancelled.
+							<hr />
+						</div>
+						{
+    						Settings.get('lastSyncHiddenGames') > 0 ? (
+        						<fragment>
+            						<div className="esgst-text-left">
+                						You should only need to perform a manual sync in rare cases, as ESGST automatically detects and updates your hidden game changes.
+                						<br />
+                						By syncing as little as possible, you help keep SteamGifts running smoothly for everyone. ❤️
+            						</div>
+        						</fragment>
+    						) : ''
+						}
+						<br />
+						If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable hidden games sync.
+					</fragment>
 				);
 				if (!doContinue) {
 					return;
@@ -454,11 +474,31 @@ async function sync(syncer) {
 		) {
 			if (Settings.get('lastPagewhitelisted') === 0 || Settings.get('lastPageblacklisted') === 0) {
 				const doContinue = await Shared.common.createConfirmationAsync(
-					`WARNING: You are going to sync your whitelist or blacklist. This is a process that may take a very long time, depending on how many users you have on your list, as the requests will be limited to 1 per second to avoid making a lot of requests to SteamGifts in a short period of time. Also keep in mind that this is a cumulative sync, which means that if you cancel the sync and sync again later, it will pick up from where it left off.${
-						Settings.get('lastSyncWhitelist') > 0 || Settings.get('lastSyncBlacklist') > 0
-							? ` It's a good idea to minimize syncing to reduce unnecessary server load. Since ESGST automatically detects and updates your whitelist/blacklist changes, you should only need to perform a manual sync in rare cases.`
-							: ''
-					} If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable whitelist or blacklist sync.`
+					<fragment>
+						<div className="notification notification--warning esgst-sync-warning">
+							WARNING: Syncing your whitelist or blacklist may take a long time depending on the amount of users.
+						</div>
+						<br />
+						<div className="esgst-text-left">
+							The requests will be limited to 1 per second to avoid SteamGifts timing you out for 'Too Many Requests' in a short period of time.
+							<br />
+							This is a cumulative sync, so it will pick up where it left off if cancelled.
+							<hr />
+						</div>
+						{
+    						Settings.get('lastSyncHiddenGames') > 0 ? (
+        						<fragment>
+            						<div className="esgst-text-left">
+                						You should only need to perform a manual sync in rare cases, as ESGST automatically detects and updates your hidden game changes.
+                						<br />
+                						By syncing as little as possible, you help keep SteamGifts running smoothly for everyone. ❤️
+            						</div>
+        						</fragment>
+    						) : ''
+						}
+						<br />
+						If you're sure you want to continue, click 'Yes', otherwise click 'No' and disable whitelist or blacklist sync.
+					</fragment>
 				);
 				if (!doContinue) {
 					return;
