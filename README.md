@@ -2,7 +2,7 @@
 
 An extension / userscript that adds some cool features to SteamGifts and SteamTrades.
 
-If you find any bugs or have any feature requests, please file an issue [here](https://github.com/SquishedPotatoe/esgst/issues).
+If you find any bugs or have any feature requests, please file an issue [here](https://github.com/yasathedog123/esgst/issues).
 
 ---
 
@@ -59,11 +59,11 @@ Palemoon:
 
 ### Option 2 - Userscript
 
-To install the userscript, you must install [Tampermonkey](https://tampermonkey.net/), [Greasemonkey](http://www.greasespot.net/) or some other userscript manager first. Then [click here](https://github.com/SquishedPotatoe/esgst/releases/latest/download/userscript.user.js) and you should be prompted to install it. I recommend Tampermonkey, because the userscript uses the GM_addValueChangeListener API to communicate changes in the storage between tabs, and that API is not available on Greasemonkey, so a polyfill is used for Greasemonkey, which is not very effective and can affect the performance.
+To install the userscript, you must install [Tampermonkey](https://tampermonkey.net/), [Greasemonkey](http://www.greasespot.net/) or some other userscript manager first. Then [click here](https://github.com/yasathedog123/esgst/releases/latest/download/userscript.user.js) and you should be prompted to install it. I recommend Tampermonkey, because the userscript uses the GM_addValueChangeListener API to communicate changes in the storage between tabs, and that API is not available on Greasemonkey, so a polyfill is used for Greasemonkey, which is not very effective and can affect the performance.
 
 You can also use the userscript on Android through Firefox with Violentmonkey or USI, but some features might not work or not be optimized enough for mobile.
 
-- [Changelog](https://github.com/SquishedPotatoe/esgst/releases)
+- [Changelog](https://github.com/yasathedog123/esgst/releases)
 
 ---
 
